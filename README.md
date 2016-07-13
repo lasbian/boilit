@@ -12,10 +12,10 @@ Add **boilit** as a systemwide command available to the user installing **boilit
 
 Store the **boilit**-directory in a safe location, and don't move it around.
 
-*Deploy makefile* :
+1. Deploy makefile:
   `~$ make boilit`
 
-*Try out boilit and check if it's available:*
+2. Try out boilit and check if it's available:
   `~$ boilit MyFirstBoilerPlate`
 
 #Dependencies: 
