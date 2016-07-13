@@ -1,6 +1,6 @@
 # boilit
-Bash script for initializing a HTML5 ★ BOILERPLATE in any directory.
-Using the first command line argument as name **boilit** will create a new directory containing a bare HTML5 ★ BOILERPLATE.
+Bash script for initializing a bare HTML5 ★ BOILERPLATE in any directory.
+Using the first command line argument as name **boilit** will create a new directory containing your new project. 
 
 ## Example run:
   `~$ bash ./boilit.sh MyFirstBoilerPlate`
