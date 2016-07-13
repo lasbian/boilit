@@ -18,4 +18,6 @@ Store the **boilit**-directory in a safe location, and don't move it around.
 *Try out boilit and check if it's available:*
   `~$ boilit MyFirstBoilerPlate`
 
-Dependencies: curl, wget, unzip, make
+#Dependencies: 
+
+`curl` `wget` `unzip` `make`
