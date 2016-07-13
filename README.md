@@ -1,16 +1,16 @@
 # boilit
-**boilit** is a Bash script for initializing a bare HTML5 ★ BOILERPLATE in any directory.
-Using the first command line argument as name **boilit** will create a new directory containing your new project. 
+*boilit* is a bash script for initializing a bare HTML5 ★ BOILERPLATE in any directory.
+Using the first command line argument as name *boilit* will create a new directory containing your new project. 
 
 ## Example run:
   `~$ bash ./boilit.sh MyFirstBoilerPlate`
 
 # Install with make
-Add **boilit** as a systemwide command available to the user installing **boilit**
+Add *boilit* as a systemwide command available to the user installing *boilit*
 
 ## Instructions:
 
-Store the **boilit**-directory in a safe location, and don't move it around.
+Store the *boilit*-directory in a safe location, and don't move it around.
 
 1. Deploy makefile:
   `~$ make boilit`
