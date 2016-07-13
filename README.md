@@ -5,10 +5,10 @@ Using the first command line argument as name **boilit** will create a new direc
 ## Example run:
   ~$ bash ./boilit.sh MyFirstBoilerPlate
 
-# Also included:
+# Install with make
 A makefile which adds **boilit** as a systemwide command (for current user).
 
-## Install with make
+## Instructions:
 
 Store the **boilit**-directory in a safe location, and don't move it around.
 
