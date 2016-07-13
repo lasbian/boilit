@@ -19,6 +19,7 @@ echo "+++++++ STARTING DOWNLOAD AND UNZIP ++++++"  &&
 
 wget https://github.com/$latestBoilerPlate -O ./boilerPlate.zip &&
 unzip ./boilerPlate.zip -d $1 &&
+rm ./boilerPlate.zip &&
 
 echo "++++++++++++++ DONE WORKING ++++++++++++++"
 echo "Project destination:"`pwd`"/"$1
