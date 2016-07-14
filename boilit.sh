@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bouilit v0.0.1
+# bouilit v0.0.2
 
 # Description:
 # Bash script for initializing a HTML5 ★ BOILERPLATE 
