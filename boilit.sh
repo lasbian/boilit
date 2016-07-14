@@ -7,22 +7,68 @@
 # in directory given by first commandline argument
 
 # Example:
-# bash ./boilit.sh MyFirstBoilerPlate
+# bash ./boilit.sh -d=MyFirstBoilerPlate
 
 # Dependencies: curl, wget , unzip
 
-echo "+++ GETTING LATEST HTML5 ★ BOILERPLATE +++" &&
+function getNUnzip {
+	if [[ $# -eq 0 ]] ; then
+		echo "+++++++++++++++++++++++++++++++++++++++++"
+	    echo "boilit need a destination for it's delicious."
+	    echo "This is defined by using the -d or --destination argument. Example -d=MyFirstBoilerPlate"
+		echo "+++++++++++++++++++++++++++++++++++++++++"
+	    exit 0
+	else
+		latestBoilerPlate=`curl -s https://github.com/h5bp/html5-boilerplate/releases/ | grep .zip | head -n 1 | cut -d '"' -f 2`;
+		wget https://github.com/$latestBoilerPlate -O ./boilerPlate.zip &&
+		unzip ./boilerPlate.zip -d $1 &&
+		rm ./boilerPlate.zip;
+	fi
+}
 
-latestBoilerPlate=`curl -s https://github.com/h5bp/html5-boilerplate/releases/ | grep .zip | head -n 1 | cut -d '"' -f 2` &&
+function postUnzip {
+	# subl $1;
+	case "$1" in
+	    sublime|s)
+	    subl $2;
+	    shift # past argument=value
+	    ;;
+	    atom|a)
+	    atom $2;
+	    shift # past argument=value
+	    ;;
+	    *)
+	            # unknown option
+	    ;;
+	esac
 
-echo "+++++++ STARTING DOWNLOAD AND UNZIP ++++++"  &&
+}
 
-wget https://github.com/$latestBoilerPlate -O ./boilerPlate.zip &&
-unzip ./boilerPlate.zip -d $1 &&
-rm ./boilerPlate.zip &&
+for i in "$@"
+do
+case $i in
+    -d=*|--destination=*)
+    DESTINATION="${i#*=}"
+    shift # past argument=value
+    ;;
+    -p=*|--pan=*)
+    PAN="${i#*=}"
+    shift # past argument=value
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
 
-echo "++++++++++++++ DONE WORKING ++++++++++++++"
-echo "Project destination:"`pwd`"/"$1
-echo "++++++++++++++++++ END +++++++++++++++++++"
+echo "++ SHOPPING: LATEST HTML5 ★ BOILERPLATE ++";
+
+echo "+++++++ COOKING: DOWNLOAD AND UNZIP ++++++";
+
+# getNUnzip $1 &&
+getNUnzip ${DESTINATION} &&
+postUnzip ${PAN} ${DESTINATION}
+
+echo "++++++++ SERVING: DINNER's READY +++++++++";
 
 exit 0
