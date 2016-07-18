@@ -15,60 +15,93 @@ function getNUnzip {
 	if [[ $# -eq 0 ]] ; then
 		echo "+++++++++++++++++++++++++++++++++++++++++"
 	    echo "boilit need a destination for it's delicious."
-	    echo "This is defined by using the -d or --destination argument. Example -d=MyFirstBoilerPlate"
+	    echo "This is defined by using the -d argument. Example -d MyFirstBoilerPlate"
 		echo "+++++++++++++++++++++++++++++++++++++++++"
 	    exit 0
 	else
-		latestBoilerPlate=`curl -s https://github.com/h5bp/html5-boilerplate/releases/ | grep .zip | head -n 1 | cut -d '"' -f 2`;
-		wget https://github.com/$latestBoilerPlate -O ./boilerPlate.zip &&
-		unzip ./boilerPlate.zip -d $1 &&
-		rm ./boilerPlate.zip;
+
+		if [ ! -d $1 ]; then
+
+			(latestBoilerPlate=`curl -s https://github.com/h5bp/html5-boilerplate/releases/ | grep .zip | head -n 1 | cut -d '"' -f 2`;
+			wget -q https://github.com/$latestBoilerPlate -O ./boilerPlate.zip
+			unzip -q ./boilerPlate.zip -d $1) & spinner
+			rm ./boilerPlate.zip;
+
+		else
+		  	echo "+++++ FAIL: DIRECTORY ALREADY EXISTS +++++"
+		  	exit 0
+
+		fi
+
+
 	fi
 }
 
-function postUnzip {
-	# subl $1;
-	case "$1" in
-	    sublime|s)
-	    subl $2;
-	    shift # past argument=value
-	    ;;
-	    atom|a)
-	    atom $2;
-	    shift # past argument=value
-	    ;;
-	    *)
-	            # unknown option
-	    ;;
-	esac
+spinner()
+{
+	i=0
+    local pid=$!
+    local delay=0.2
+    local spinstr='+ L + O + A + D + I + N + G'
+        	# printf "**********"
 
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+    	i=$(($i + 1))
+        local temp=${spinstr#?}
+		printf "%c" "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+		if test $i -gt 41
+		then
+        	i=0
+        	printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+		fi
+    done
+    printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
 }
 
-for i in "$@"
-do
-case $i in
-    -d=*|--destination=*)
-    DESTINATION="${i#*=}"
-    shift # past argument=value
-    ;;
-    -p=*|--pan=*)
-    PAN="${i#*=}"
-    shift # past argument=value
-    ;;
-    *)
-            # unknown option
-    ;;
-esac
+
+ 
+while getopts ":d:p:" opt; do
+
+  case $opt in
+  	d)
+		if [ $OPTARG = "-p" ]; then
+		    getNUnzip
+		else
+			DESTINATION=$OPTARG
+		fi
+		;;
+
+    p)
+      	PAN=$OPTARG
+      	;;
+
+    \?)
+      	echo "Invalid option: -$OPTARG" >&2
+      	exit 1
+      	;;
+    :)
+      	echo "Option -$OPTARG requires an argument." >&2
+      	exit 1
+      	;;
+  esac
 done
 
+echo "";
+echo "++++++++++++++ LET's BOILIT ++++++++++++++";
+sleep 0.2;
 echo "++ SHOPPING: LATEST HTML5 ★ BOILERPLATE ++";
-
+sleep 0.2;
 echo "+++++++ COOKING: DOWNLOAD AND UNZIP ++++++";
-
-# getNUnzip $1 &&
+sleep 0.2;
 getNUnzip ${DESTINATION} &&
-postUnzip ${PAN} ${DESTINATION}
+
+if [ -n "$PAN" ]; then
+	exec ${PAN} ${DESTINATION}&
+fi &&
 
 echo "++++++++ SERVING: DINNER's READY +++++++++";
+echo "";
 
 exit 0
