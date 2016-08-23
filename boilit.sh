@@ -11,6 +11,8 @@
 
 # Dependencies: curl, wget , unzip
 
+boilitDirectory="/home/lasbian/downloads/boilit"
+
 function getNUnzip {
 	if [[ $# -eq 0 ]] ; then
 		echo "+++++++++++++++++++++++++++++++++++++++++"
@@ -62,7 +64,7 @@ spinner()
 
 
  
-while getopts ":d:p:" opt; do
+while getopts ":d:p:s:" opt; do
 
   case $opt in
   	d)
@@ -75,6 +77,10 @@ while getopts ":d:p:" opt; do
 
     p)
       	PAN=$OPTARG
+      	;;
+
+    s)
+      	SPICE=$OPTARG
       	;;
 
     \?)
@@ -97,9 +103,23 @@ echo "+++++++ COOKING: DOWNLOAD AND UNZIP ++++++";
 sleep 0.2;
 getNUnzip ${DESTINATION} &&
 
+if [ -n "$SPICE" ]; then
+	# echo ${SPICE} &
+	echo "+++ POWER TO BOWER: INSTALLING ANGULAR +++";
+	bower -s install angularjs --config.cwd=${DESTINATION} & spinner &&
+
+	# find template
+
+	angularTemplate=$boilitDirectory'/angularStarter.html'
+	cp $angularTemplate ${DESTINATION}/index.html
+
+fi &&
+
 if [ -n "$PAN" ]; then
 	exec ${PAN} ${DESTINATION}&
 fi &&
+
+
 
 echo "++++++++ SERVING: DINNER's READY +++++++++";
 echo "";
